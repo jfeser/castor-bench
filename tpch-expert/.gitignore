@@ -1,0 +1,4 @@
+*-gold/
+*.time
+*.csv
+*.mem
