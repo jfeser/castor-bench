@@ -1,0 +1,31 @@
+query q1(param0 : int) {
+alist(orderby([l_returnflag, l_linestatus],
+        dedup(select([l_returnflag, l_linestatus], lineitem))) as k0,
+  select([l_returnflag, l_linestatus, sum(agg24) as sum_qty,
+          sum(agg25) as sum_base_price, sum(agg26) as sum_disc_price,
+          sum(agg27) as sum_charge, (sum(agg24) / sum(agg28)) as avg_qty,
+          (sum(agg25) / sum(agg28)) as avg_price,
+          (sum(agg29) / sum(agg28)) as avg_disc, sum(agg28) as count_order],
+    aorderedidx(select([l_shipdate], dedup(select([l_shipdate], lineitem))) as s18,
+      alist(select([agg29, agg28, agg27, agg26, agg25, agg24, l_returnflag,
+                    l_linestatus],
+              filter((count4 > 0),
+                select([count() as count4, sum(l_discount) as agg29,
+                        count() as agg28,
+                        sum(((l_extendedprice * (1 - l_discount)) *
+                            (1 + l_tax))) as agg27,
+                        sum((l_extendedprice * (1 - l_discount))) as agg26,
+                        sum(l_extendedprice) as agg25,
+                        sum(l_quantity) as agg24, l_returnflag, l_linestatus],
+                  filter((l_shipdate = s18.l_shipdate),
+                    select([l_quantity, l_extendedprice, l_discount, 
+                            l_tax, l_returnflag, l_linestatus, l_shipdate],
+                      filter(((l_returnflag = k0.l_returnflag) &&
+                             (l_linestatus = k0.l_linestatus)),
+                        lineitem)))))) as s20,
+        atuple([ascalar(s20.agg29), ascalar(s20.agg28), ascalar(s20.agg27),
+                ascalar(s20.agg26), ascalar(s20.agg25), ascalar(s20.agg24),
+                ascalar(s20.l_returnflag), ascalar(s20.l_linestatus)],
+          cross)),
+      , <= (date("1998-12-01") - day(param0)))))
+}
