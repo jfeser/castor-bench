@@ -1,0 +1,7 @@
+*.csv
+*.time
+*.mem
+*.log
+*-opt*/
+Makefile
+*-opt.txt
