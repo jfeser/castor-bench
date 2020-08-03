@@ -68,7 +68,7 @@ if DEBUG:
 else:
     print('CFLAGS=-v')
 
-print('BENCH_DIR=../../castor/bench/tpch/')
+print('BENCH_DIR=../tpch/')
 print('TIME_CMD=/usr/bin/time')
 print('TIME_PER_BENCH=1')
 print('all: opt compile run time')
