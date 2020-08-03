@@ -29,7 +29,7 @@ def ensure_newline(fn):
 
 def validate(name, ordered, result_csv):
     bench_num = name.split("-")[0]
-    gold_csv = "gold/%s.csv" % name
+    gold_csv = "../tpch/%s.csv" % name
     ensure_newline(gold_csv)
     ensure_newline(result_csv)
     if not bool(ordered):

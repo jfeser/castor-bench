@@ -71,7 +71,7 @@ time: %s
 print('''
 validate: %s
 .PHONY: validate
-''' % (' '.join(['analysis_%s-opt.csv.log' % b['name'] for b in bench])))
+''' % (' '.join(['analysis_%s.log' % b['name'] for b in bench])))
 
 for b in bench:
     print('''
@@ -93,7 +93,7 @@ for b in bench:
 
     print('''
 analysis_{0}.log:
-\t../bin/validate.py {0} {1} {0}.csv
+\t../bin/validate.py {0} {1} {0}-gold.csv
     '''.format(b['name'], str(b['ordered'])))
 
 print('''

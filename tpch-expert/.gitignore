@@ -2,3 +2,5 @@
 *.time
 *.csv
 *.mem
+*.log
+Makefile
