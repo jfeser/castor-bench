@@ -12,7 +12,7 @@ def rpath(p):
 VALIDATE_SCRIPT = rpath("cmpq.pl")
 
 def call(cmd_args, *args, **kwargs):
-    return subprocess.call(cmd_args, *args, **kwargs)
+    return subprocess.check_call(cmd_args, *args, **kwargs)
 
 def sort_file(fn):
     call(["sort", "-o", fn, fn])
@@ -42,4 +42,5 @@ if __name__ == '__main__':
         print('Usage: validate.py BENCH_NAME ORDERED RESULT')
         exit(1)
 
-    validate(sys.argv[1], bool(sys.argv[2]), sys.argv[3])
+    is_ordered = (sys.argv[2] == 'True')
+    validate(sys.argv[1], is_ordered, sys.argv[3])
