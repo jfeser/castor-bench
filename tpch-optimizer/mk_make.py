@@ -59,7 +59,7 @@ print('SHELL:=/bin/bash')
 
 print('OPT_PATH=../../castor-opt/bin/opt.exe')
 print('OPT=dune exec --no-build $(OPT_PATH) -- ')
-print ('OPT_FLAGS=-cost-timeout 5.0 -v -set-log-level-castor.ops info -set-log-level-castor.type info -timeout 3600')
+print ('OPT_FLAGS=-cost-timeout 5.0 -v -set-log-level-castor.ops warning -set-log-level-castor.type warning -timeout 7200')
 
 print('COMPILE_PATH=../../castor/bin/compile.exe')
 print('COMPILE=dune exec --no-build $(COMPILE_PATH) -- ')
@@ -130,6 +130,6 @@ analysis_{0}-opt.csv.log:
 print('''
 .PHONY: clean
 clean:
-\trm -rf *-opt.txt *-opt *-opt.csv *-opt.log *-opt.time analysis_*.log \
+\trm -rf *-opt.txt *-opt *-opt.csv *-opt.log *-opt.time analysis_*.log *-trial *-opt.mem \
          hashes.txt
 ''')
