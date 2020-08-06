@@ -50,8 +50,16 @@ if DEBUG:
     print('CFLAGS=-debug -v')
 else:
     print('CFLAGS=-v')
+print('XFORM_PATH=../../castor-opt/bin/xform.exe')
+print('XFORM=dune exec --no-build $(XFORM_PATH) -- ')
 print('TIME_CMD=/usr/bin/time')
-print('TIME_PER_BENCH=1')
+print ('TIME_PER_BENCH=1')
+print('BENCH_DIR=../tpch/')
+
+print('''
+gen: %s
+.PHONY: gen
+''' % (' '.join(['%s-gold.txt' % b['name'] for b in bench])))
 
 print('''
 compile: %s
@@ -74,11 +82,22 @@ validate: %s
 ''' % (' '.join(['analysis_%s.log' % b['name'] for b in bench])))
 
 for b in bench:
+    if b['name'] == '15':
+        # Force use of postgres for correct interval support
+        print('''
+{0}-gold: export CASTOR_DB=postgres:///tpch
+{0}-gold: export CASTOR_DB=postgres:///tpch
+    '''.format(b['name']))
     print('''
 {0}-gold: ../../castor/bench/tpch/{0}-gold.txt
 \tmkdir -p $@
 \t$(COMPILE) $(CFLAGS) -o $@ {1} $< > $@/compile.log 2>&1
-'''.format(b['name'], gen_param_types(b)))
+    '''.format(b['name'], gen_param_types(b)))
+
+    print('''
+{0}-gold.txt:
+\t$(XFORM) -name {0} {1} $(BENCH_DIR)/{0}.txt > $@
+'''.format(b['name'], gen_params(b)))
 
     print('''
 {0}-gold.csv:
@@ -88,7 +107,7 @@ for b in bench:
     print('''
 {0}-gold.time:
 \t./{0}-gold/scanner.exe -t $(TIME_PER_BENCH) {0}-gold/data.bin {1} > $@
-\t$(TIME_CMD) -v ./{0}-gold/scanner.exe -t $(TIME_PER_BENCH) {0}/data.bin {1} 2> {0}-gold.mem > /dev/null
+\t$(TIME_CMD) -v ./{0}-gold/scanner.exe -t $(TIME_PER_BENCH) {0}-gold/data.bin {1} 2> {0}-gold.mem > /dev/null
 '''.format(b['name'], gen_param_values(b)))
 
     print('''

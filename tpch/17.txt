@@ -27,10 +27,10 @@
 select([(sum(l1_extendedprice) / 7.0) as avg_yearly],
   filter((l1_quantity <
          (select([(0.2 * avg(l_quantity)) as l_avgquantity],
-            filter((l_partkey = p_partkey), lineitem)))),
-    join((p_partkey = l1_partkey),
+            filter((l_partkey = p1_partkey), lineitem)))),
+    join((p1_partkey = l1_partkey),
       select([l_partkey as l1_partkey,
               l_extendedprice as l1_extendedprice,
               l_quantity as l1_quantity],
         lineitem),
-      filter(((p_brand = param0) && (p_container = param1)), part))))
+      filter(((p1_brand = param0) && (p1_container = param1)), select([p_brand as p1_brand, p_container as p1_container, p_partkey as p1_partkey], part)))))
