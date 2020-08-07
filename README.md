@@ -3,14 +3,19 @@
 The artifact is packaged as a Docker container. Follow the instructions here
 (https://docs.docker.com/get-started/) to get Docker set up on your machine.
 
+The default username/password is ubuntu/ubuntu.
+
 ## Importing the image
 
 To import the container image, run
 ```
-docker import oopsla-29.tar.gz
+docker import castor-docker.tar.gz castor
 ```
 
 ## Starting a shell
+
+Start the container with `docker run -it -v $(pwd):/castor castor:latest bash
+-l`. Start PostgreSQL with `sudo service postgresql start` (password `ubuntu`).
 
 ## Compiling
 
@@ -60,13 +65,14 @@ Table 2 contains four different benchmark configurations:
 
 The steps for reproducing the Castor numbers in Table 1 are:
 1. `cd /castor/castor-bench/tpch-multi`
-2. Generate the makefile with `./mk_make.py > Makefile`.
+2. Generate the makefile with `./mk_make.py queries.json > Makefile`.
+2. Generate the combined queries with `make queries`.
 3. Compile the queries with `make compile`.
 4. Run the queries with `make run`.
 5. Time the queries with `make time`.
 6. Generate CSV containing the results with `../bin/results.py .`.
 
-The scripts and queries for Hyper are in `castor-bench/tpch-hyper`.
+The scripts and queries for Hyper are in `castor-bench/tpch-hyper-paper-version`.
 
 ## Table 2
 
@@ -78,8 +84,9 @@ suite, which we can't distribute.
 ### Hyper specialized queries
 
 The scripts for running Hyper on manually specialized TPC-H queries are in
-`castor-bench/tpch-hyper`. We can't distribute the Hyper binaries, but we have
-provided the log output from the run of Hyper that we reported in the paper.
+`castor-bench/tpch-hyper-paper-version`. We can't distribute the Hyper binaries,
+but we have provided the log output from the run of Hyper that we reported in
+the paper.
 
 ### Castor expert queries
 
