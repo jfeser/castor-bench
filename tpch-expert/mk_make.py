@@ -44,8 +44,7 @@ with open('../tpch/queries.json', 'r') as f:
     bench = json.loads(jsmin(f.read()))
 
 print('SHELL:=/bin/bash')
-print('COMPILE_PATH=../../castor/bin/compile.exe')
-print('COMPILE=dune exec --no-build $(COMPILE_PATH) -- ')
+print('COMPILE=../../_build/default/castor/bin/compile.exe')
 if DEBUG:
     print('CFLAGS=-debug -v')
 else:
@@ -89,7 +88,7 @@ for b in bench:
 {0}-gold: export CASTOR_DB=postgres:///tpch
     '''.format(b['name']))
     print('''
-{0}-gold: ../../castor/bench/tpch/{0}-gold.txt
+{0}-gold: {0}-gold.txt
 \tmkdir -p $@
 \t$(COMPILE) $(CFLAGS) -o $@ {1} $< > $@/compile.log 2>&1
     '''.format(b['name'], gen_param_types(b)))
