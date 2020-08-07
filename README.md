@@ -8,14 +8,20 @@ The default username/password is ubuntu/ubuntu.
 ## Importing the image
 
 To import the container image, run
+
 ```
-docker import castor-docker.tar.gz castor
+docker load castor-docker.tar castor
 ```
 
 ## Starting a shell
 
-Start the container with `docker run -it -v $(pwd):/castor castor:latest bash
--l`. Start PostgreSQL with `sudo service postgresql start` (password `ubuntu`).
+Start the container with 
+
+```
+docker run -it -v $(pwd):/castor castor:latest bash -l
+```
+
+Start PostgreSQL with `sudo service postgresql start` (password `ubuntu`).
 
 ## Compiling
 
@@ -23,33 +29,28 @@ In `/castor/`, run `dune build @install`.
 
 ## Configuring
 
-Castor is configured through environment variables. Run `source
-castor/config-docker-redshift.sh` to configure Castor to use Redshift as its
-backing database. Running `source castor/config-docker-postgres.sh` will select
-Postgres instead. Redshift is much faster and is suggested for running the
-benchmarks.
+Castor is configured through environment variables. Run 
+
+```
+source castor/config-docker-redshift.sh
+```
+
+to configure Castor to use Redshift as its backing database. Running `source
+castor/config-docker-postgres.sh` will select Postgres instead. Redshift is much
+faster and is suggested for running the benchmarks.
 
 ## Running the test suite
 
-In `/castor/`, run `dune runtest`. There should be no output. It's important to
-source one of the configuration scripts before running the tests.
+In `/castor/`, run `dune runtest`. 
+
+Errors about missing environment variables are usually caused by not sourcing a
+configuration script. Errors when connecting to the Postgres database can be
+caused by not starting the database.
 
 # Evaluation
 
 The artifact contains the scripts for reproducing Tables 1 and 2 in the paper,
 which contain the main performance claims. 
-
-Table 1 contains two benchmark configurations:
-
-1. Hyper with manually combined and specialized datasets
-2. Castor with combined optimized queries
-
-Table 2 contains four different benchmark configurations:
-
-1. Vanilla Hyper
-2. Hyper with manually specialized datasets
-3. Expert generated Castor queries
-4. Optimizer generated Castor queries
     
 ## Structure of the artifact
 
@@ -63,6 +64,11 @@ Table 2 contains four different benchmark configurations:
  
 ## Table 1
 
+Table 1 contains two benchmark configurations:
+
+1. Hyper with manually combined and specialized datasets
+2. Castor with combined optimized queries
+
 The steps for reproducing the Castor numbers in Table 1 are:
 1. `cd /castor/castor-bench/tpch-multi`
 2. Generate the makefile with `./mk_make.py queries.json > Makefile`.
@@ -75,6 +81,13 @@ The steps for reproducing the Castor numbers in Table 1 are:
 The scripts and queries for Hyper are in `castor-bench/tpch-hyper-paper-version`.
 
 ## Table 2
+
+Table 2 contains four different benchmark configurations:
+
+1. Vanilla Hyper
+2. Hyper with manually specialized datasets
+3. Expert generated Castor queries
+4. Optimizer generated Castor queries
 
 ### Hyper default
 
