@@ -10,7 +10,7 @@ The default username/password is ubuntu/ubuntu.
 To import the container image, run
 
 ```
-docker load castor-docker.tar castor
+docker load < castor-docker.tar
 ```
 
 ## Starting a shell
@@ -49,9 +49,11 @@ caused by not starting the database.
 
 # Evaluation
 
-The artifact contains the scripts for reproducing Tables 1 and 2 in the paper,
-which contain the main performance claims. 
-    
+The main performance result in the paper is the comparison with Hyper in Tables
+1 and 2. The artifact supports reproducing the Castor portions of these tables.
+We can't distribute the Hyper binaries, but we have provided the scripts and log
+files from our experiments with Hyper.
+
 ## Structure of the artifact
 
  - `castor/`: the Castor compiler and helper programs
@@ -70,6 +72,7 @@ Table 1 contains two benchmark configurations:
 2. Castor with combined optimized queries
 
 The steps for reproducing the Castor numbers in Table 1 are:
+
 1. `cd /castor/castor-bench/tpch-multi`
 2. Generate the makefile with `./mk_make.py queries.json > Makefile`.
 2. Generate the combined queries with `make queries`.
@@ -92,7 +95,8 @@ Table 2 contains four different benchmark configurations:
 ### Hyper default
 
 The numbers we report in the paper come from our run of the Hyper benchmark
-suite, which we can't distribute.
+suite, which we can't distribute. We didn't create any additional helper scripts
+for these benchmarks.
 
 ### Hyper specialized queries
 
@@ -115,6 +119,10 @@ The steps for benchmarking the expert queries are:
 4. Validate the query outputs with `make validate`.
 5. Generate CSV containing the results with `../bin/results.py .`
 
+Compiling the queries takes several hours. In particular, query 15 is compiled
+using Postgres because of a compatibility issue with Redshift and can take a
+long time.
+
 ### Castor optimizer queries
 
 The steps for benchmarking the optimizer generated queries are:
@@ -131,6 +139,9 @@ The steps for benchmarking the optimizer generated queries are:
    Makefile; make` in `castor-bench/tpch`.
 4. Validate the query outputs with `make validate`.
 5. Generate CSV containing the results with `../bin/results.py .`
+
+The optimizer is set to run for 2hrs for each query. The runtime can be
+configured by changing the `-timeout` flag.
 
 #### Optimizer non-determinism
     
