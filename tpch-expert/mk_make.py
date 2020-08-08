@@ -84,14 +84,16 @@ for b in bench:
     if b['name'] == '15':
         # Force use of postgres for correct interval support
         print('''
-{0}-gold: export CASTOR_DB=postgres:///tpch
-{0}-gold: export CASTOR_DB=postgres:///tpch
-    '''.format(b['name']))
-    print('''
+{0}-gold: {0}-gold.txt
+\tmkdir -p $@
+\t$(COMPILE) $(CFLAGS) -enable-redshift-dates -o $@ {1} $< > $@/compile.log 2>&1
+        '''.format(b['name'], gen_param_types(b)))
+    else:
+        print('''
 {0}-gold: {0}-gold.txt
 \tmkdir -p $@
 \t$(COMPILE) $(CFLAGS) -o $@ {1} $< > $@/compile.log 2>&1
-    '''.format(b['name'], gen_param_types(b)))
+        '''.format(b['name'], gen_param_types(b)))
 
     print('''
 {0}-gold.txt:
