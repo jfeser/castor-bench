@@ -57,8 +57,9 @@ with open('../tpch/queries.json', 'r') as f:
 
 print('SHELL:=/bin/bash')
 
-print('OPT=../../_build/default/castor-opt/bin/opt.exe')
-print ('OPT_FLAGS=-cost-timeout 5.0 -v -set-log-level-castor.ops warning -set-log-level-castor.type warning -timeout 7200')
+print ('OPT=../../_build/default/castor-opt/bin/opt.exe')
+print ('OPT_TIMEOUT=7200')
+print ('OPT_FLAGS=-cost-timeout 5.0 -v -set-log-level-castor.ops warning -set-log-level-castor.type warning -timeout $(OPT_TIMEOUT)')
 
 print('COMPILE_PATH=../../castor/bin/compile.exe')
 print('COMPILE=dune exec --no-build $(COMPILE_PATH) -- ')
