@@ -340,5 +340,76 @@
         20.0
       ]
     ]
+  },
+  {
+    "name": "20",
+    "ordered": true,
+    "query": [
+      "20-gold"
+    ],
+    "params": [
+      [
+        "param0:string",
+        "forest"
+      ],
+      [
+        "param1:date",
+        "1994-01-01"
+      ],
+      [
+        "param2:string",
+        "CANADA"
+      ]
+    ]
+  },
+  {
+    "name": "21-no",
+    "ordered": false,
+    "query": [
+      "21-no-gold"
+    ],
+    "params": [
+      [
+        "param0:string",
+        "SAUDI ARABIA"
+      ]
+    ]
+  },
+  {
+    "name": "21-no",
+    "ordered": false,
+    "query": [
+      "21-no-gold"
+    ],
+    "params": [
+      [
+        "param0:string",
+        "13"
+      ],
+      [
+        "param0:string",
+        "31"
+      ],
+      [
+        "param0:string",
+        "23"
+      ],
+      [
+        "param0:string",
+        "29"
+      ],
+      [
+        "param0:string",
+        "30"
+      ],
+      [
+        "param0:string",
+        "18"
+      ],
+      [
+        "param0:string",
+        "17"
+      ]
+    ]
   }
 ]
