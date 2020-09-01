@@ -10,9 +10,11 @@ groupby([s_name, count() as numwait],
                           lineitem))),
           filter(not(exists(filter(((l3_orderkey = l1_orderkey) &&
                                    (not((l3_suppkey = l1_suppkey)) &&
-                                   (l_receiptdate > l_commitdate))),
+                                   (l3_receiptdate > l3_commitdate))),
                               select([l_orderkey as l3_orderkey,
-                                      l_suppkey as l3_suppkey],
+                                      l_suppkey as l3_suppkey,
+                                      l_receiptdate as l3_receiptdate,
+                                      l_commitdate as l3_commitdate],
                                 lineitem)))),
             select([l_receiptdate as l1_receiptdate,
                     l_commitdate as l1_commitdate, l_suppkey as l1_suppkey,
