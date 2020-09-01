@@ -1,0 +1,17 @@
+select([s_name, s_address],
+  orderby([s_name],
+    join((s_nationkey = n_nationkey),
+      filter((n_name = param2), nation),
+      filter(exists(filter((s_suppkey = ps_suppkey),
+                      filter(exists(filter((ps_partkey = p_partkey),
+                                      filter((strpos(p_name, param0) = 1),
+                                        part))),
+                        filter((ps_availqty >
+                               (select([(0.5 * sum(l_quantity))],
+                                  filter(((l_partkey = ps_partkey) &&
+                                         ((l_suppkey = ps_suppkey) &&
+                                         ((l_shipdate >= param1) &&
+                                         (l_shipdate < (param1 + year(1)))))),
+                                    lineitem)))),
+                          partsupp)))),
+        supplier))))
