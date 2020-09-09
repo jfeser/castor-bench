@@ -1,0 +1,52 @@
+alist(orderby([nation, o_year desc],
+        dedup(
+          select([n_name as nation, to_year(o_orderdate) as o_year],
+            join((s_suppkey = l_suppkey),
+              join(((ps_suppkey = l_suppkey) && (ps_partkey = l_partkey)),
+                join((p_partkey = l_partkey),
+                  part,
+                  join((o_orderkey = l_orderkey), orders, lineitem)),
+                partsupp),
+              join((s_nationkey = n_nationkey), supplier, nation))))) as k0,
+  select([nation, o_year, sum(amount) as sum_profit],
+    filter((if (param1 = "yellow") then wit0__11 else (if (param1 = "white") then wit0__10 else (if 
+      (param1 = "red") then wit0__9 else (if (param1 = "purple") then wit0__8 else (if 
+      (param1 = "pink") then wit0__7 else (if (param1 = "orange") then wit0__6 else (if 
+      (param1 = "navy") then wit0__5 else (if (param1 = "grey") then wit0__4 else (if 
+      (param1 = "green") then wit0__3 else (if (param1 = "brown") then wit0__2 else (if 
+      (param1 = "blue") then wit0__1 else (if (param1 = "black") then wit0__0 else 
+      (strpos(p_name, param1) > 0))))))))))))),
+      alist(select([(strpos(p_name, "black") > 0) as wit0__0,
+                    (strpos(p_name, "blue") > 0) as wit0__1,
+                    (strpos(p_name, "brown") > 0) as wit0__2,
+                    (strpos(p_name, "green") > 0) as wit0__3,
+                    (strpos(p_name, "grey") > 0) as wit0__4,
+                    (strpos(p_name, "navy") > 0) as wit0__5,
+                    (strpos(p_name, "orange") > 0) as wit0__6,
+                    (strpos(p_name, "pink") > 0) as wit0__7,
+                    (strpos(p_name, "purple") > 0) as wit0__8,
+                    (strpos(p_name, "red") > 0) as wit0__9,
+                    (strpos(p_name, "white") > 0) as wit0__10,
+                    (strpos(p_name, "yellow") > 0) as wit0__11, nation,
+                    o_year, amount, p_name],
+              filter(((nation = k0.nation) && (o_year = k0.o_year)),
+                select([n_name as nation, to_year(o_orderdate) as o_year,
+                        ((l_extendedprice * (1 - l_discount)) -
+                        (ps_supplycost * l_quantity)) as amount, p_name],
+                  join((s_suppkey = l_suppkey),
+                    join(((ps_suppkey = l_suppkey) &&
+                         (ps_partkey = l_partkey)),
+                      join((p_partkey = l_partkey),
+                        part,
+                        join((o_orderkey = l_orderkey), orders, lineitem)),
+                      partsupp),
+                    join((s_nationkey = n_nationkey), supplier, nation))))) as s6,
+        atuple([ascalar(s6.wit0__0), ascalar(s6.wit0__1),
+                ascalar(s6.wit0__2), ascalar(s6.wit0__3),
+                ascalar(s6.wit0__4), ascalar(s6.wit0__5),
+                ascalar(s6.wit0__6), ascalar(s6.wit0__7),
+                ascalar(s6.wit0__8), ascalar(s6.wit0__9),
+                ascalar(s6.wit0__10), ascalar(s6.wit0__11),
+                ascalar(s6.nation), ascalar(s6.o_year), ascalar(s6.amount),
+                ascalar(s6.p_name)],
+          cross)))))

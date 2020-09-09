@@ -1,0 +1,32 @@
+select([c_custkey, c_name, revenue, c_acctbal, n_name, c_address, c_phone,
+        c_comment],
+  alist(dedup(
+          select([c_custkey, c_name, c_acctbal, c_phone, n_name, c_address,
+                  c_comment],
+            join((c_custkey = o_custkey),
+              join((c_nationkey = n_nationkey), customer, nation),
+              join((l_orderkey = o_orderkey),
+                filter((l_returnflag = "R"), lineitem),
+                orders)))) as k0,
+    atuple([ascalar(k0.c_custkey), ascalar(k0.c_name), ascalar(k0.c_acctbal),
+            ascalar(k0.n_name), ascalar(k0.c_address), ascalar(k0.c_phone),
+            ascalar(k0.c_comment),
+            select([sum((l_extendedprice * (1 - l_discount))) as revenue],
+              filter(((o_orderdate >= param0) &&
+                     (o_orderdate < (param0 + month(3)))),
+                alist(join(((l_returnflag = "R") &&
+                           (((c_custkey = k0.c_custkey) &&
+                            ((c_name = k0.c_name) &&
+                            ((c_acctbal = k0.c_acctbal) &&
+                            ((c_phone = k0.c_phone) &&
+                            ((n_name = k0.n_name) &&
+                            ((c_address = k0.c_address) &&
+                            (c_comment = k0.c_comment))))))) &&
+                           (c_custkey = o_custkey))),
+                        join((c_nationkey = n_nationkey), customer, nation),
+                        join((l_orderkey = o_orderkey), lineitem, orders)) as s6,
+                  atuple([ascalar(s6.l_discount),
+                          ascalar(s6.l_extendedprice),
+                          ascalar(s6.o_orderdate)],
+                    cross))))],
+      cross)))

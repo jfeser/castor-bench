@@ -3,5 +3,4 @@
 *.csv
 *.mem
 *.log
-*-gold.txt
 Makefile
