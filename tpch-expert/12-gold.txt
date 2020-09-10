@@ -1,12 +1,10 @@
 alist(orderby([l_shipmode],
-        dedup(
-          select([l_shipmode],
-            join((o_orderkey = l_orderkey), orders, lineitem)))) as k0,
-  filter(((l_shipmode = param1) || (l_shipmode = param2)),
+        dedup(select([l_shipmode], dedup(select([l_shipmode], lineitem))))) as k0,
+  filter((true && ((l_shipmode = param1) || (l_shipmode = param2))),
     select([l_shipmode, sum(agg0) as high_line_count,
             sum(agg1) as low_line_count],
       aorderedidx(select([l_receiptdate],
-                    dedup(select([l_receiptdate], lineitem))) as s6,
+                    dedup(select([l_receiptdate], lineitem))) as s7,
         alist(filter((count0 > 0),
                 select([count() as count0,
                         sum((if (not((o_orderpriority = "1-URGENT")) &&
@@ -20,13 +18,13 @@ alist(orderby([l_shipmode],
                         l_linestatus, l_returnflag, l_comment, l_commitdate,
                         l_shipdate, l_tax, l_discount, l_extendedprice,
                         l_quantity],
-                  join(((l_receiptdate = s6.l_receiptdate) &&
+                  join(((l_receiptdate = s7.l_receiptdate) &&
                        ((l_commitdate < l_receiptdate) &&
                        ((l_shipdate < l_commitdate) &&
                        ((l_shipmode = k0.l_shipmode) &&
                        (o_orderkey = l_orderkey))))),
                     orders,
-                    lineitem))) as s7,
-          atuple([ascalar(s7.agg1), ascalar(s7.agg0), ascalar(s7.l_shipmode)],
+                    lineitem))) as s8,
+          atuple([ascalar(s8.agg1), ascalar(s8.agg0), ascalar(s8.l_shipmode)],
             cross)),
         >= param3, < (param3 + year(1))))))

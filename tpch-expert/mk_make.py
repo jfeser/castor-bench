@@ -50,7 +50,7 @@ if DEBUG:
 else:
     print('CFLAGS=-v')
 print('XFORM_PATH=../../castor-opt/bin/xform.exe')
-print('XFORM=dune exec --no-build $(XFORM_PATH) -- ')
+print('XFORM=dune exec $(XFORM_PATH) -- -trace -set-log-level-castor.ops debug')
 print('TIME_CMD=/usr/bin/time')
 print ('TIME_PER_BENCH=1')
 print('BENCH_DIR=../tpch/')

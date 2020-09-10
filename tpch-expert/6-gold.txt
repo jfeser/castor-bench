@@ -2,14 +2,14 @@ select([sum((l_extendedprice * l_discount)) as revenue],
   filter(((l_discount >= (param1 - 0.01)) &&
          (l_discount <= (param1 + 0.010001))),
     select([l_discount, l_extendedprice],
-      aorderedidx(select([l_quantity], dedup(select([l_quantity], lineitem))) as s7,
+      aorderedidx(select([l_quantity], dedup(select([l_quantity], lineitem))) as s8,
         select([l_discount, l_extendedprice],
-          aorderedidx(dedup(select([l_shipdate], lineitem)) as s6,
+          aorderedidx(dedup(select([l_shipdate], lineitem)) as s7,
             alist(select([l_discount, l_extendedprice],
-                    filter(((l_quantity = s7.l_quantity) &&
-                           (l_shipdate = s6.l_shipdate)),
-                      lineitem)) as s8,
-              atuple([ascalar(s8.l_discount), ascalar(s8.l_extendedprice)],
+                    filter(((l_quantity = s8.l_quantity) &&
+                           (l_shipdate = s7.l_shipdate)),
+                      lineitem)) as s9,
+              atuple([ascalar(s9.l_discount), ascalar(s9.l_extendedprice)],
                 cross)),
             >= param0, < (param0 + year(1)))),
         , < param2))))

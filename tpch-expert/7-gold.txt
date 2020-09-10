@@ -8,9 +8,10 @@ select([n1_name, n2_name, l_year, revenue],
                     [n1_name, n2_name, l_year],
                     select([n1_name, n2_name, to_year(l_shipdate) as l_year,
                             (l_extendedprice * (1 - l_discount)) as volume],
-                      join(((((n1_name = s1.n_name) && (n2_name = s0.n_name))
+                      join(((true &&
+                            (((n1_name = s1.n_name) && (n2_name = s0.n_name))
                             ||
-                            ((n1_name = s0.n_name) && (n2_name = s1.n_name)))
+                            ((n1_name = s0.n_name) && (n2_name = s1.n_name))))
                            && (s_suppkey = l_suppkey)),
                         join((o_orderkey = l_orderkey),
                           join((c_custkey = o_custkey),
@@ -27,9 +28,9 @@ select([n1_name, n2_name, l_year, revenue],
                           select([n_name as n1_name,
                                   n_nationkey as n1_nationkey],
                             nation),
-                          supplier))))) as s6,
-            atuple([ascalar(s6.n1_name), ascalar(s6.n2_name),
-                    ascalar(s6.l_year), ascalar(s6.revenue)],
+                          supplier))))) as s7,
+            atuple([ascalar(s7.n1_name), ascalar(s7.n2_name),
+                    ascalar(s7.l_year), ascalar(s7.revenue)],
               cross))),
         param0)),
     param1))

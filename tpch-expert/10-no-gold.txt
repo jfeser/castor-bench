@@ -24,9 +24,9 @@ select([c_custkey, c_name, revenue, c_acctbal, n_name, c_address, c_phone,
                             (c_comment = k0.c_comment))))))) &&
                            (c_custkey = o_custkey))),
                         join((c_nationkey = n_nationkey), customer, nation),
-                        join((l_orderkey = o_orderkey), lineitem, orders)) as s6,
-                  atuple([ascalar(s6.l_discount),
-                          ascalar(s6.l_extendedprice),
-                          ascalar(s6.o_orderdate)],
+                        join((l_orderkey = o_orderkey), lineitem, orders)) as s7,
+                  atuple([ascalar(s7.l_discount),
+                          ascalar(s7.l_extendedprice),
+                          ascalar(s7.o_orderdate)],
                     cross))))],
       cross)))

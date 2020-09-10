@@ -7,8 +7,8 @@ select([p_brand, p_type, p_size, supplier_cnt],
          ((p_size = param6) ||
          ((p_size = param7) ||
          ((p_size = param8) || ((p_size = param9) || (p_size = param10)))))))))),
-    alist(dedup(select([p_size as k2], part)) as s8,
-      atuple([ascalar(s8.k2 as p_size),
+    alist(dedup(select([p_size as k2], part)) as s9,
+      atuple([ascalar(s9.k2 as p_size),
               alist(groupby([p_brand, p_type, count() as supplier_cnt],
                       [p_brand, p_type],
                       filter(not(exists(filter(((ps_suppkey = s_suppkey) &&
@@ -20,9 +20,9 @@ select([p_brand, p_type, p_size, supplier_cnt],
                         dedup(
                           select([p_type, p_brand, p_size, ps_suppkey],
                             join((p_partkey = ps_partkey),
-                              filter((p_size = s8.k2), part),
-                              partsupp))))) as s9,
-                atuple([ascalar(s9.p_brand), ascalar(s9.p_type),
-                        ascalar(s9.supplier_cnt)],
+                              filter((p_size = s9.k2), part),
+                              partsupp))))) as s10,
+                atuple([ascalar(s10.p_brand), ascalar(s10.p_type),
+                        ascalar(s10.supplier_cnt)],
                   cross))],
         cross))))

@@ -21,9 +21,9 @@ select([s_suppkey, s_name, s_address, s_phone, total_revenue],
                       [l_suppkey],
                       filter(((l_shipdate >= s3.l_shipdate) &&
                              (l_shipdate < (s3.l_shipdate + month(3)))),
-                        lineitem)))))) as s6,
-        atuple([ascalar(s6.s_suppkey), ascalar(s6.s_name),
-                ascalar(s6.s_address), ascalar(s6.s_phone),
-                ascalar(s6.total_revenue)],
+                        lineitem)))))) as s7,
+        atuple([ascalar(s7.s_suppkey), ascalar(s7.s_name),
+                ascalar(s7.s_address), ascalar(s7.s_phone),
+                ascalar(s7.total_revenue)],
           cross))),
     param1))
